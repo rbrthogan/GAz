@@ -55,3 +55,7 @@ target/
 
 #PyCharm Project files
 .idea/
+
+#GA output files
+poly_out
+prediction_out
