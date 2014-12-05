@@ -57,5 +57,5 @@ target/
 .idea/
 
 #GA output files
-poly_out
-prediction_out
+#poly_out
+#prediction_out
