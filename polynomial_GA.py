@@ -30,6 +30,16 @@ class polyGA:
         self.y=ydata
         return
 
+    def load_validation_data(self,xdata,ydata):
+        self.x_v=xdata
+        self.y_v=ydata
+        return
+
+    def load_test_data(self,xdata,ydata):
+        self.x_t=xdata
+        self.y_t=ydata
+        return
+
     def rand_term(self):
         term=[]
         total=0
@@ -61,9 +71,9 @@ class polyGA:
         self.pop=pop
         return
 
-    def genome2poly(self,individual):
+    def genome2poly(self,individual,x):
         #for each term of individual raise data to powers specified
-        t=np.array([self.x**np.array(individual[i]) for i in range(len(individual))])
+        t=np.array([x**np.array(individual[i]) for i in range(len(individual))])
         #muliply together subterms e.g. [x1^2,x2^0]->x1^2*x2^0
         p=t.prod(axis=2)
         return p
@@ -83,7 +93,7 @@ class polyGA:
 
     def optimize_individual(self,individual):
         init_coeffs=2*np.random.rand(len(individual))-1.0
-        poly=self.genome2poly(individual)
+        poly=self.genome2poly(individual,self.x)
         coeffs=curve_fit(self.y_cf(poly),self.x,self.y,p0=init_coeffs,Dfun=self.jacobian_cf(poly),col_deriv=1)[0]
         residuals=np.squeeze(self.y_cf(poly)(self.x,coeffs))-self.y
         err=np.dot(residuals,residuals)
@@ -117,7 +127,7 @@ class polyGA:
             self.best_coeffs=deepcopy(coeffs[self.index_best_fit])
         return
     def best_rms(self):
-        poly=self.genome2poly(self.best_individual)
+        poly=self.genome2poly(self.best_individual,self.x)
 
         y_predict=self.y_cf(poly)(self.x,self.best_coeffs)
         self.rms=np.sqrt(np.mean((self.y-y_predict)**2))
@@ -224,12 +234,24 @@ class polyGA:
 
         np.savetxt(filepath,np.array(poly_out))
 
-    def save_y_prediction(self,filepath='prediction_out'):
-        poly=self.genome2poly(self.best_individual)
-        y_predict=np.squeeze(self.y_cf(poly)(self.x,self.best_coeffs))
+    def save_y_prediction(self,dataset,filepath='prediction_out'):
+        if dataset=='train':
+            x=self.x
+            y=self.y
+        elif dataset=='valid':
+            x=self.x_v
+            y=self.y_v
+        elif dataset=='test':
+            x=self.x_t
+            y=self.y_t
+        else:
+            raise ValueError('Unknown dataset. Please chose form {train,valid,test}')
+
+        poly=self.genome2poly(self.best_individual,x)
+        y_predict=np.squeeze(self.y_cf(poly)(x,self.best_coeffs))
         y_out=[]
-        for j in range(len(self.y)):
-            y_out.append([self.y[j],y_predict[j]])
+        for j in range(len(y)):
+            y_out.append([y[j],y_predict[j]])
 
         np.savetxt(filepath,np.array(y_out))
 
