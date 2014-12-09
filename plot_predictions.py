@@ -1,4 +1,8 @@
 __author__ = 'Robert Hogan'
+'''
+Script to plot predictions of model vs. true value for test set
+'''
+
 
 import numpy as np
 import matplotlib.pyplot as plt
