@@ -248,7 +248,7 @@ class polyGA:
 
         poly=self.genome2poly(self.best_individual,x)
 
-        y_predict=self.y_cf(poly)(x,self.best_coeffs)
+        y_predict=self.y_model(poly)(x,self.best_coeffs)
         rms=np.sqrt(np.mean((y-y_predict)**2))
 
         return rms

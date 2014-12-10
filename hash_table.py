@@ -6,13 +6,15 @@ class hash_table:
    table=[]
    bucketNumber=0
 
-   def __init__(self, buckets=1007):
+   def __init__(self, buckets=10007):
       self.bucketNumber = buckets
       hash_table.table=[[[],[],[]] for _ in xrange(buckets)]
 
    def key_gen(self,individual):
         x=np.array(individual)
-        key=np.sum(x)+len(x[x==0])
+
+        key=np.sum(x)*np.product(x[x!=0])
+
         return key%self.bucketNumber
 
 
