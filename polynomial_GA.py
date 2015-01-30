@@ -387,7 +387,7 @@ class polyGA:
             raise ValueError('Unknown dataset. Please chose form {train,valid,test}')
 
         poly=self.genome2poly(self.best_individual,x)
-        y_predict=np.squeeze(self.y_cf(poly)(x,self.best_coeffs))
+        y_predict=np.squeeze(self.y_model(poly)(x,self.best_coeffs))
         y_out=[]
         for j in range(len(y)):
             y_out.append([y[j],y_predict[j]])
