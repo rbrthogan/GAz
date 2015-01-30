@@ -12,7 +12,7 @@ y_train=data[:,-1]
 data=np.loadtxt('data/valid')
 x_valid=data[:,:5]
 y_valid=data[:,-1]
-data=np.loadtxt('data/train')
+data=np.loadtxt('data/test')
 x_test=data[:,:5]
 y_test=data[:,-1]
 
