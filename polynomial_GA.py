@@ -146,9 +146,12 @@ class polyGA:
         '''
         Makes polynomial with all coefficients set to 1 from genetic encoding and xdata
         '''
-
+        
+        t=np.empty((self.terms,len(x),self.vars))
         #for each term of individual raise data to powers specified
-        t=np.array([x**np.array(individual[i]) for i in range(len(individual))])
+
+        for i in range(self.terms):
+            t[i,:,:]=x**np.array(individual[i])
         #muliply together subterms e.g. [x1^2,x2^0]->x1^2*x2^0
         p=t.prod(axis=2)
         return p
