@@ -19,3 +19,11 @@ USAGE:
 -Run the run_GA.py script.
 
 NOTE: it is a good idea to run the GA several times to mitigate against the dependence on the intial population. The final result should be taken as the run with the losest cross validation error.
+
+-----------------------------------------------------------------------------------------
+
+DEPENDENCIES:
+
+- Scipy
+- Numpy
+- Matplotlib (if using plotting scripts)

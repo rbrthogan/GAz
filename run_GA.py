@@ -17,6 +17,7 @@ x_test=data[:,:5]
 y_test=data[:,-1]
 
 # initialise polynomial GA object by setting hyperparameters
+# see polynomial_GA.py for full list and description of inputs
 GA=polyGA(selection='tournament',tournmanent_size=10)
 
 #load data into GA object
