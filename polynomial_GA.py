@@ -342,7 +342,8 @@ class polyGA:
                 p2.sort()
                 pop_new.append(p1)
                 pop_new.append(p2)
-        return pop_new
+        self.pop=pop_new
+        return
 
     def mutate(self):
         '''
