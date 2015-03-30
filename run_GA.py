@@ -31,5 +31,6 @@ GA.run_GA()
 #save best polynomial
 GA.save_poly()
 #save prediction for given dataset set
-GA.save_y_prediction('test')
+errors=x_test=data[:,5:-1]
+GA.save_y_prediction('test',errors=errors)
 

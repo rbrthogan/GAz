@@ -163,7 +163,6 @@ class polyGA:
         Args:
             poly: polynomial generated for individual using genome2poly
         '''
-        x=self.x
         def y_model_i(x,*coeffs):
             #calculated full polynomial using given coefficients
             y=np.dot(coeffs,poly)
@@ -177,6 +176,28 @@ class polyGA:
         def jacobian_i(*coeffs):
             return np.array(poly)
         return jacobian_i
+
+    def y_deriv(self,individual,t):
+        def y_deriv_i(xdata,*coeffs):
+            poly_d=deepcopy(individual)
+            poly_d[:,t]-=1
+            poly_d[poly_d<0]+=1
+            poly_d_coeffs=individual[:,t]*coeffs
+
+            p=self.genome2poly(poly_d,xdata)
+
+            #muliply by coeffs and sum to get predicted y value for each data point
+            y=np.dot(poly_d_coeffs,p)
+
+            return np.squeeze(y)
+        return y_deriv_i
+
+    def error_bars(self,individual,coeffs,x,errors):
+
+        error_sq=0
+        for i in range(self.vars):
+            error_sq+=(self.y_deriv(individual,i)(x,coeffs)*errors[:,i])**2
+        return np.sqrt(error_sq)
 
     def optimize_individual(self,individual):
         '''
@@ -374,7 +395,7 @@ class polyGA:
 
         np.savetxt(filepath,np.array(poly_out))
 
-    def save_y_prediction(self,dataset,filepath='prediction_out'):
+    def save_y_prediction(self,dataset,filepath='prediction_out',errors=None):
         '''
         Saves true y and predicted y for given dataset
         '''
@@ -392,11 +413,27 @@ class polyGA:
 
         poly=self.genome2poly(self.best_individual,x)
         y_predict=np.squeeze(self.y_model(poly)(x,self.best_coeffs))
-        y_out=[]
-        for j in range(len(y)):
-            y_out.append([y[j],y_predict[j]])
+        if errors !=None:
+            y_errors=self.error_bars(np.array(self.best_individual),np.array(self.best_coeffs),x,errors)
+            y_out=[]
+            for j in range(len(y)):
+                y_out.append([y[j],y_predict[j],y_errors[j]])
 
-        np.savetxt(filepath,np.array(y_out))
+            np.savetxt(filepath,np.array(y_out))
+        else:
+            y_out=[]
+            for j in range(len(y)):
+                y_out.append([y[j],y_predict[j]])
+
+            np.savetxt(filepath,np.array(y_out))
+
+
+    def error_bars(self,individual,coeffs,x,errors):
+
+        error_sq=0
+        for i in range(self.vars):
+            error_sq+=(self.y_deriv(individual,i)(x,coeffs)*errors[:,i])**2
+        return np.sqrt(error_sq)
 
     def run_GA(self,max_gens=500):
         '''

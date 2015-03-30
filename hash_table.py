@@ -13,7 +13,7 @@ class hash_table:
    def key_gen(self,individual):
         x=np.array(individual)
 
-        key=np.sum(x)*np.product(x[x!=0])
+        key=np.int(np.sum(x)*np.prod(x[x!=0],dtype=np.float32))
 
         return key%self.bucketNumber
 
