@@ -20,6 +20,22 @@ USAGE:
 
 NOTE: it is a good idea to run the GA several times to mitigate against the dependence on the intial population. The final result should be taken as the run with the losest cross validation error.
 
+
+Using optimal polynomial on new dataset:
+
+-Run make_predictions.py script with new data as input:
+
+    options:
+ 
+        -f : path to input data (required)
+ 
+        -e : use input errors to calculate error on prediction (optional, default won't use errors)
+            inputs: Y/y (use errors) N/n (don't use errors)
+      
+        -o : path to save output prediction (optional, defaults to "path/to/input/_predictions")
+ 
+        -p : path to polynomial file ouput by code (optional, defaults to 'poly_out')
+ 
 -----------------------------------------------------------------------------------------
 
 DEPENDENCIES:
