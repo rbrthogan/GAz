@@ -20,6 +20,12 @@ USAGE:
 
 NOTE: it is a good idea to run the GA several times to mitigate against the dependence on the intial population. The final result should be taken as the run with the losest cross validation error.
 
+OUTPUT:
+
+    - poly_out : the best polynomial found with optimal coefficients (1 row per term in format: coeff,exponent,exponent,...,exponent)
+    
+    - predictions_out : prediction with error for specified data set (format : true_value,prediction,prediciton error bar)
+
 
 Using optimal polynomial on new dataset:
 
